@@ -1,88 +1,111 @@
 import io
+import csv
+import os
 import sys
-
 import unittest
 
 class TestAssignment(unittest.TestCase):
 
-    def test_str_raises_error(self):
-        errmsg = "Unsupported input type"
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
-        to_hms("10")
-        sys.stdout = sys.__stdout__
-        displaystr = capturedOutput.getvalue().strip()
-        self.assertNotEqual(
-            displaystr, "",
-            msg="to_hms() does not display an error message when given a string"
-         )
-        self.assertTrue(
-            displaystr.startswith(errmsg),
-            msg="expected error message {errmsg!r}, got {displaystr!r}"
-        )
-
-    def test_value_7199(self):
-        callstr = "to_hms(7199)"
-        result = to_hms(7199)
-        self.assertIsInstance(
-            result, list,
-            msg=f"{callstr} does not return a list of three integers"
-        )
-        self.assertEqual(
-            len(result), 3,
-            msg=f"{callstr} does not return a list of three integers"
-        )
-        for i in range(3):
+    def test_part1(self):
+        header, data = read_csv(filename)
+        for label in header:
             self.assertIsInstance(
-                result[i], int,
-                msg=f"{callstr} does not return a list of three integers"
-            )
-        self.assertCountEqual(
-            result, [1, 59, 59],
+            label, str,
+            msg="header should be a list of four strs"
         )
-
-    def test_value_61(self):
-        callstr = "to_hms(61)"
-        result = to_hms(61)
-        self.assertIsInstance(
-            result, list,
-            msg=f"{callstr} does not return a list of three integers"
-        )
-        self.assertEqual(
-            len(result), 3,
-            msg=f"{callstr} does not return a list of three integers"
-        )
-        for i in range(3):
+        for i, row in enumerate(data, start=1):
             self.assertIsInstance(
-                result[i], int,
-                msg=f"{callstr} does not return a list of three integers"
+                row, list,
+                msg="data should be a list of rows, each row represented by a list"
             )
-        self.assertCountEqual(
-            result, [0, 1, 1],
-        )
-
-    def test_value_10(self):
-        callstr = "to_hms(10)"
-        result = to_hms(10)
-        self.assertIsInstance(
-            result, list,
-            msg=f"{callstr} does not return a list of three integers"
-        )
-        self.assertEqual(
-            len(result), 3,
-            msg=f"{callstr} does not return a list of three integers"
-        )
-        for i in range(3):
             self.assertIsInstance(
-                result[i], int,
-                msg=f"{callstr} does not return a list of three integers"
+                row[0], int,
+                msg=f"First item in row {i} should be an int"
             )
-        self.assertCountEqual(
-            result, [0, 0, 10]
-        )
+            self.assertIsInstance(
+                row[1], str,
+                msg=f"Second item in row {i} should be a str"
+            )
+            self.assertIsInstance(
+                row[2], str,
+                msg=f"Third item in row {i} should be a str"
+            )
+            self.assertIsInstance(
+                row[3], int,
+                msg=f"Fourth item in row {i} should be an int"
+            )
+
+    def test_part2(self):
+        header, enrolment = read_csv(filename)
+        mf_enrolment = filter_gender(enrolment, "MF")
+        for i, row in enumerate(mf_enrolment, start=1):
+            self.assertEqual(
+                len(row), 3,
+                msg="After filtering, each row (list) should have only three items"
+            )
+            self.assertIsInstance(
+                row[0], int,
+                msg=f"First item in row {i} should be an int"
+            )
+            self.assertIsInstance(
+                row[1], str,
+                msg=f"Second item in row {i} should be a str"
+            )
+            self.assertIsInstance(
+                row[2], int,
+                msg=f"Third item in row {i} should be an int"
+            )
+
+    def test_part3(self):
+        header, enrolment = read_csv(filename)
+        mf_enrolment = filter_gender(enrolment, "MF")
+        enrolment_by_year = sum_by_year(mf_enrolment)
+        for i, row in enumerate(enrolment_by_year, start=1):
+            self.assertEqual(
+                len(row), 2,
+                msg="After summing, each row should only have two items"
+            )
+            year, total = row
+            self.assertIsInstance(
+                year, int,
+                msg=f"First item of row {i} should be an int"
+            )
+            self.assertIsInstance(
+                total, int,
+                msg=f"First item of row {i} should be an int"
+            )
+
+    def test_part4(self):
+        correct_enrolment = {
+            1984: 21471, 1985: 24699, 1986: 27598, 1987: 29508, 1988: 32082, 1989: 31729,
+            1990: 29214, 1991: 27224, 1992: 24663, 1993: 23958, 1994: 22857, 1995: 21690,
+            1996: 21858, 1997: 22311, 1998: 23530, 1999: 24834, 2000: 24804, 2001: 24376,
+            2002: 25376, 2003: 24559, 2004: 24681, 2005: 28901, 2006: 30726, 2007: 31627,
+            2008: 32579, 2009: 32110, 2010: 32420, 2011: 32296, 2012: 32087, 2013: 32165,
+            2014: 31613, 2015: 29559, 2016: 28442, 2017: 29252, 2018: 29012,
+        }        
+        header, enrolment = read_csv(filename)
+        mf_enrolment = filter_gender(enrolment, "MF")
+        enrolment_by_year = sum_by_year(mf_enrolment)
+        header = ["year", "total_enrolment"]
+        outfile = "total-enrolment-by-year.csv"
+        write_csv(outfile, header, enrolment_by_year)
+        with open(outfile, 'r') as f:
+            for record in csv.DictReader(f):
+                self.assertTrue(record["year"].isdecimal())
+                self.assertTrue(record["total_enrolment"].isdecimal())
+                year, total_enrolment = int(record["year"]), int(record["total_enrolment"])
+                self.assertEqual(
+                    total_enrolment, correct_enrolment[year],
+                    msg=f"Correct enrolment for {year} should be {correct_enrolment[year]}, got {total_enrolment} instead"
+                )
+        try:
+            os.remove(outfile)
+        except Exception:
+            pass
 
     def test_docstrings(self):
-    for func in [to_hms]:
+    for func in [read_csv, filter_gender, sum_by_year, write_csv]:
         self.assertIs(hasattr(func, "__doc__"), True)
         self.assertTrue(func.__doc__, f"{func.__name__}() does not have a docstring")
 
