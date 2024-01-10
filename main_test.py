@@ -4,6 +4,8 @@ import os
 import sys
 import unittest
 
+from main import *
+
 class TestAssignment(unittest.TestCase):
 
     def test_part1(self):
