@@ -77,4 +77,5 @@ Write your data to a CSV file, `total-enrolment-by-year.csv`, in the same format
 
 # Submission
 
-Run the tests on your final code below submission. Note that only the functions will be tested; other code outside of the functions do not constitute part of the submission.
+Before submitting your code, run the automated tests on your functions. In the shell, type `python test_main.py` and press enter to see the results of the testing.
+
