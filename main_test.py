@@ -107,9 +107,9 @@ class TestAssignment(unittest.TestCase):
             pass
 
     def test_docstrings(self):
-    for func in [read_csv, filter_gender, sum_by_year, write_csv]:
-        self.assertIs(hasattr(func, "__doc__"), True)
-        self.assertTrue(func.__doc__, f"{func.__name__}() does not have a docstring")
+        for func in [read_csv, filter_gender, sum_by_year, write_csv]:
+            self.assertIs(hasattr(func, "__doc__"), True)
+            self.assertTrue(func.__doc__, f"{func.__name__}() does not have a docstring")
 
 
 if __name__ == '__main__':
