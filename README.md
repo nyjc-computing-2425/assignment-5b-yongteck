@@ -33,7 +33,7 @@ You should end up with data for three columns: `year`, `age`, and `enrolment_jc`
 
 ### Sample output: new_data
 
-    >>> mf_enrolment = filter_gender(enrolment, "MF")
+    >>> mf_enrolment = filter_gender(enrolment_data, "MF")
     >>> mf_enrolment
     [[1984, '17 YRS', 8710],
      [1984, '18 YRS', 3927],
@@ -45,7 +45,7 @@ You may use the header indexes directly.
 
 ## Part 3: Sum up enrolment by year
 
-Define a function, `sum_by_year(enrolment)`, that will:
+Define a function, `sum_by_year(enrolment_data)`, that will:
 
 1. Add up the total enrolment for each year, regardless of age
 2. Return the result as a list of lists. The inner list comprises two integers, `year` and `total_enrolment`.
