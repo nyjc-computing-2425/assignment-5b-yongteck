@@ -94,8 +94,8 @@ class TestAssignment(unittest.TestCase):
         write_csv(outfile, header, enrolment_by_year)
         with open(outfile, 'r') as f:
             for record in csv.DictReader(f):
-                self.assertTrue(record["year"].isdecimal())
-                self.assertTrue(record["total_enrolment"].isdecimal())
+                self.assertTrue(record["year"].isdecimal(), "year has non-decimal characters! eg. spacing")
+                self.assertTrue(record["total_enrolment"].isdecimal(), "total_enrolment has non-decimal characters! eg. spacing")
                 year, total_enrolment = int(record["year"]), int(record["total_enrolment"])
                 self.assertEqual(
                     total_enrolment, correct_enrolment[year],
