@@ -9,6 +9,7 @@ from main import *
 class TestAssignment(unittest.TestCase):
 
     def test_part1(self):
+        filename = "pre-u-enrolment-by-age.csv"
         header, data = read_csv(filename)
         for label in header:
             self.assertIsInstance(
@@ -38,6 +39,7 @@ class TestAssignment(unittest.TestCase):
             )
 
     def test_part2(self):
+        filename = "pre-u-enrolment-by-age.csv"
         header, enrolment = read_csv(filename)
         mf_enrolment = filter_gender(enrolment, "MF")
         for i, row in enumerate(mf_enrolment, start=1):
@@ -59,6 +61,7 @@ class TestAssignment(unittest.TestCase):
             )
 
     def test_part3(self):
+        filename = "pre-u-enrolment-by-age.csv"
         header, enrolment = read_csv(filename)
         mf_enrolment = filter_gender(enrolment, "MF")
         enrolment_by_year = sum_by_year(mf_enrolment)
@@ -85,7 +88,8 @@ class TestAssignment(unittest.TestCase):
             2002: 25376, 2003: 24559, 2004: 24681, 2005: 28901, 2006: 30726, 2007: 31627,
             2008: 32579, 2009: 32110, 2010: 32420, 2011: 32296, 2012: 32087, 2013: 32165,
             2014: 31613, 2015: 29559, 2016: 28442, 2017: 29252, 2018: 29012,
-        }        
+        }
+        filename = "pre-u-enrolment-by-age.csv"
         header, enrolment = read_csv(filename)
         mf_enrolment = filter_gender(enrolment, "MF")
         enrolment_by_year = sum_by_year(mf_enrolment)
