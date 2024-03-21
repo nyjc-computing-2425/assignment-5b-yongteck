@@ -48,7 +48,7 @@ You may use the header indexes directly.
 Define a function, `sum_by_year(enrolment_data)`, that will:
 
 1. Add up the total enrolment for each year, regardless of age
-2. Return the result as a list of lists. The inner list comprises two integers, `year` and `total_enrolment`.
+2. Return the result as a list of lists. Each inner list comprises two integers, `year` and `total_enrolment`.
 
 You may assume that the last item in the record is the enrolment.
 
